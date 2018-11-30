@@ -1,9 +1,10 @@
 /* eslint-disable */
 import { test } from "tape";
-import { build, wrap, styles, sizes } from "../src/";
+import { build, wrap, styles, sizes, Component as NativeTachyonsComponent } from "../src/";
 import _ from "lodash";
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
+import TestRenderer from "react-test-renderer";
 import Benchmark from "benchmark";
 
 function buildRNT(options) {
@@ -256,6 +257,25 @@ test("wrapping render class", t => {
     t.deepEqual(result.props.style, [{ fontWeight: "bold" }])
     t.end();
 });
+
+test("NativeTachyonsComponent", t => {
+    const TestComponent = props => (
+        <NativeTachyonsComponent>
+            <div cls={`bg-${props.backgroundColor}`} >props.text</div>
+        </NativeTachyonsComponent>
+    )
+
+    const renderer = TestRenderer.create(
+        <TestComponent text='Hello there!' backgroundColor='pink' />
+    );
+    const result = renderer.toTree();
+
+    t.deepEqual(result.props.children.type, "div");
+    t.comment(result.props.children.props)
+    t.deepEqual(result.props.children.props, [{ fontWeight: "bold" }])
+
+    t.end();
+})
 
 test("calculate line-height fails without font-size", t => {
     const Orig = wrap(class Orig extends React.Component {
