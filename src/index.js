@@ -131,4 +131,4 @@ const NativeTachyons = {
 
 
 export default NativeTachyons;
-export const { sizes, styles, wrap, build, options, Component: component } = NativeTachyons;
+export const { sizes, styles, wrap, build, options, component: Component } = NativeTachyons;
