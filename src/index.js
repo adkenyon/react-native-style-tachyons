@@ -37,6 +37,9 @@ const NativeTachyons = {
 
     options: {},
 
+    /* Component */
+    component: reactWrapper.wrap(({ children }) => children),
+
     build: function build (options = {}, StyleSheet) {
 
         _.defaultsDeep(options, {
@@ -128,4 +131,4 @@ const NativeTachyons = {
 
 
 export default NativeTachyons;
-export const { sizes, styles, wrap, build, options } = NativeTachyons;
+export const { sizes, styles, wrap, build, options, Component: component } = NativeTachyons;
