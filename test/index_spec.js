@@ -1,10 +1,9 @@
 /* eslint-disable */
 import { test } from "tape";
-import { build, wrap, styles, sizes, Component as NativeTachyonsComponent } from "../src/";
+import { build, wrap, styles, sizes, component } from "../src/";
 import _ from "lodash";
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
-import TestRenderer from "react-test-renderer";
 import Benchmark from "benchmark";
 
 function buildRNT(options) {
@@ -236,7 +235,7 @@ test("wrapping benchmark", t => {
         .on("cycle", event => {
             t.comment(`performance: ${event.target}`);
         })
-        // .run()
+        .run()
 
     t.end();
 })
@@ -258,22 +257,18 @@ test("wrapping render class", t => {
     t.end();
 });
 
-test("NativeTachyonsComponent", t => {
-    const TestComponent = props => (
-        <NativeTachyonsComponent>
-            <div cls={`bg-${props.backgroundColor}`} >props.text</div>
-        </NativeTachyonsComponent>
+test.only("NativeTachyonsComponent", t => {
+    const TestComponent = () => (
+        <component>
+            <div cls='bg-pink' />
+        </component>
     )
 
-    const renderer = TestRenderer.create(
-        <TestComponent text='Hello there!' backgroundColor='pink' />
-    );
-    const result = renderer.toTree();
-
+    const renderer = new ShallowRenderer();
+    renderer.render(<TestComponent />);
+    const result = renderer.getRenderOutput();
     t.deepEqual(result.props.children.type, "div");
-    t.comment(result.props.children.props)
-    t.deepEqual(result.props.children.props, [{ fontWeight: "bold" }])
-
+    t.deepEqual(result.props.children.props, {  })
     t.end();
 })
 
